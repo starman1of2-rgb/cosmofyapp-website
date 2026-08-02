@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility | Cosmofy™</title>
+<meta name="description" content="Cosmofy's approach to Android and website accessibility, including screen reader support, scalable text, and ongoing testing.">
+<link rel="canonical" href="https://cosmofyapp.com/accessibility.html">
+<meta name="theme-color" content="#2b2622">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cosmofy">
+<meta property="og:title" content="Accessibility | Cosmofy™">
+<meta property="og:description" content="Cosmofy's approach to Android and website accessibility, including screen reader support, scalable text, and ongoing testing.">
+<meta property="og:url" content="https://cosmofyapp.com/accessibility.html">
+<meta property="og:image" content="https://cosmofyapp.com/social-preview.svg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Accessibility | Cosmofy™">
+<meta name="twitter:description" content="Cosmofy's approach to Android and website accessibility, including screen reader support, scalable text, and ongoing testing.">
+<meta name="twitter:image" content="https://cosmofyapp.com/social-preview.svg">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none';">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main-content">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container nav-bar">
+    <a class="wordmark" href="index.html">
+      <svg class="logo-mark" viewBox="0 0 108 108" role="img" aria-labelledby="logo-title">
+        <title id="logo-title">Cosmofy logo</title>
+        <rect width="108" height="108" rx="24" fill="#2b2622"/>
+        <path fill="#e8d9b5" d="M54,27 C39.09,27 27,39.09 27,54 C27,68.91 39.09,81 54,81 C63.16,81 71.24,76.42 76.14,69.44 L66.4,63.32 C63.29,67.29 58.94,69.7 54,69.7 C45.28,69.7 38.3,62.72 38.3,54 C38.3,45.28 45.28,38.3 54,38.3 C58.53,38.3 62.6,40.4 65.68,43.98 L75.5,37.98 C70.44,31.35 62.75,27 54,27 Z"/>
+        <path fill="#a9784f" d="M54,45 C49.03,45 45,49.03 45,54 C45,58.97 49.03,63 54,63 C58.97,63 63,58.97 63,54 C63,49.03 58.97,45 54,45 Z"/>
+      </svg>
+      Cosmofy™
+    </a>
+    <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-navigation" aria-label="Menu">
+      <span class="nav-toggle-icon"></span>
+    </button>
+    <nav class="primary-nav" id="primary-navigation" data-primary-nav aria-label="Primary">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#features">Features</a></li>
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html" aria-current="page">Accessibility</a></li>
+        <li><a href="support.html">Support</a></li>
+        <li><span class="nav-beta-status" data-beta-status>Preparing for Android beta testing</span></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main-content" tabindex="-1">
+  <div class="page-header">
+    <div class="container">
+      <h1>Accessibility statement</h1>
+      <p class="lede">Cosmofy is designed to support Android accessibility features including screen readers, scalable text, and alternate navigation methods. We continue to test and improve accessibility and welcome reports of barriers.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="container prose">
+      <h2>The Cosmofy Android app</h2>
+      <ul>
+        <li>Developed with screen-reader semantics in mind, including TalkBack.</li>
+        <li>Controls are built with meaningful labels and states.</li>
+        <li>Gesture-only actions, such as appointment removal, have an accessible alternative.</li>
+        <li>Touch targets and color contrast have been reviewed.</li>
+        <li>Large text and Android display-scaling settings are part of testing.</li>
+        <li>TalkBack was manually tested successfully on a physical Pixel device during development.</li>
+        <li>Accessibility is treated as an ongoing responsibility across future releases, not a one-time checkbox.</li>
+      </ul>
+      <p>Cosmofy is not described as fully compliant with any specific accessibility law or certification. Known limitations may exist, and we welcome reports of barriers so they can be addressed.</p>
+
+      <h2>This website</h2>
+      <ul>
+        <li>Semantic HTML headings in a logical order on every page.</li>
+        <li>A "Skip to main content" link as the first focusable element.</li>
+        <li>Full keyboard navigation, including the mobile menu.</li>
+        <li>Visible keyboard focus indicators throughout.</li>
+        <li>Responsive text that remains usable at 200% browser zoom.</li>
+        <li>Support for <code>prefers-reduced-motion</code> to minimize animation.</li>
+        <li>Descriptive link text rather than generic "click here" links.</li>
+        <li>Sufficient color contrast between text and backgrounds.</li>
+      </ul>
+
+      <h2>Reporting a barrier</h2>
+      <p>If you encounter an accessibility barrier on this website or in the Cosmofy app, please contact <a href="mailto:support@cosmofyapp.com" data-support-email data-fill-text>support@cosmofyapp.com</a>. Please describe the page or screen, the device and assistive technology you used, and what you expected to happen.</p>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a class="wordmark" href="index.html">
+          <svg class="logo-mark" viewBox="0 0 108 108" role="img" aria-labelledby="footer-logo-title">
+            <title id="footer-logo-title">Cosmofy logo</title>
+            <rect width="108" height="108" rx="24" fill="#2b2622"/>
+            <path fill="#e8d9b5" d="M54,27 C39.09,27 27,39.09 27,54 C27,68.91 39.09,81 54,81 C63.16,81 71.24,76.42 76.14,69.44 L66.4,63.32 C63.29,67.29 58.94,69.7 54,69.7 C45.28,69.7 38.3,62.72 38.3,54 C38.3,45.28 45.28,38.3 54,38.3 C58.53,38.3 62.6,40.4 65.68,43.98 L75.5,37.98 C70.44,31.35 62.75,27 54,27 Z"/>
+            <path fill="#a9784f" d="M54,45 C49.03,45 45,49.03 45,54 C45,58.97 49.03,63 54,63 C58.97,63 63,58.97 63,54 C63,49.03 58.97,45 54,45 Z"/>
+          </svg>
+          Cosmofy™
+        </a>
+        <p>cosmofyapp.com</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy</a></li>
+        <li><a href="accessibility.html">Accessibility</a></li>
+        <li><a href="support.html">Support</a></li>
+        <li><span>Android beta coming soon</span></li>
+      </ul>
+    </div>
+    <p class="footer-fine-print">
+      &copy; <span data-current-year>2026</span> Cosmofy™. Cosmofy organizes information entered by the user. Financial reports are not tax, accounting, or legal advice.
+    </p>
+  </div>
+</footer>
+
+<script src="site-config.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
