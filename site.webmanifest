@@ -1,0 +1,15 @@
+{
+  "name": "Cosmofy",
+  "short_name": "Cosmofy",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#f7f1e8",
+  "theme_color": "#2b2622",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
