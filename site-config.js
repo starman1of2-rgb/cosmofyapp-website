@@ -9,7 +9,7 @@ const COSMOFY_CONFIG = {
   siteName: "Cosmofy",
   domain: "https://cosmofyapp.com",
 
-  // When betaFormUrl is set to a real link, the "Express beta interest"
+  // When betaFormUrl is set to a real link, the "Contact Cosmofy" beta
   // button will open that form in place of the mailto fallback.
   betaFormUrl: "",
 
@@ -25,5 +25,5 @@ const COSMOFY_CONFIG = {
   // When a Google Play listing exists, set this to the store URL.
   playStoreUrl: "",
 
-  betaStatus: "Preparing for Android beta testing",
+  betaStatus: "Now in Android beta testing",
 };
