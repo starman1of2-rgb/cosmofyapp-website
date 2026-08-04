@@ -126,16 +126,25 @@ Edit `contactEmail` and `supportEmail` in `site-config.js`.
 Edit `betaStatus` in `site-config.js`. This updates every element marked
 `data-beta-status` (currently in the header nav and `support.html`).
 
-### To replace CSS mockups with real screenshots
+### To add or replace a real screenshot
+
+The hero and the "See it in action" gallery (`.screenshot-gallery` in
+`index.html`) both use real app screenshots inside the `.phone-mockup` /
+`.phone-mockup-screen` frame — see `assets/screenshots/README.md` for the
+current list and what each one is used for.
 
 1. Confirm the screenshot contains no client names, contact info,
    formulas, photographs, or financial data — see
-   `CONTENT_REVIEW_CHECKLIST.md`.
-2. Add the reviewed image to `assets/screenshots/`.
-3. Replace the relevant `.phone-mockup` block in `index.html` with an
-   `<img>` tag pointing at the new file, including a `width`/`height` and
-   meaningful `alt` text (or `alt=""` if purely decorative and already
-   described in nearby text).
+   `CONTENT_REVIEW_CHECKLIST.md`. Only sample/test data belongs on this
+   site, even when it looks realistic.
+2. Add the reviewed image to `assets/screenshots/` and note it in that
+   folder's `README.md`.
+3. Point an `<img>` inside a `.phone-mockup-screen` at the new file,
+   including the image's real `width`/`height` (prevents layout shift)
+   and `alt` text that describes the feature shown — never a name or
+   number visible in the screenshot itself. Gallery images (below the
+   fold) should keep `loading="lazy"`; the hero image should not, since
+   it's above the fold.
 
 ## How GitHub Pages deployment works
 
@@ -228,5 +237,13 @@ values — no client data, no private text, no identifying metadata. No
 other file was copied from the Android repository. The Android app's
 `splash_background.png` (a photographic image) was deliberately **not**
 used on this website because its image licensing/rights could not be
-verified from local inspection alone; the hero section uses a CSS-drawn
-phone mockup instead.
+verified from local inspection alone.
+
+The real app screenshots in `assets/screenshots/` (used in the hero and
+the "See it in action" gallery) came from an on-device Pixel test
+session using seeded sample/test data, not real client records — see
+`assets/screenshots/README.md` for the per-file list. Each was
+individually reviewed before being added: the only client name visible
+anywhere is "Play Test," and any phone numbers shown use the
+`555-01XX` block reserved for fictional use, never assigned to a real
+subscriber.
