@@ -100,9 +100,122 @@
     });
   }
 
+  function setupLightbox() {
+    var dialog = document.querySelector("[data-lightbox]");
+    var triggers = Array.prototype.slice.call(
+      document.querySelectorAll("[data-lightbox-trigger]")
+    );
+    if (!dialog || !triggers.length || typeof dialog.showModal !== "function") {
+      return;
+    }
+
+    var imageEl = dialog.querySelector("[data-lightbox-image]");
+    var captionEl = dialog.querySelector("[data-lightbox-caption]");
+    var positionEl = dialog.querySelector("[data-lightbox-position]");
+    var prevBtn = dialog.querySelector("[data-lightbox-prev]");
+    var nextBtn = dialog.querySelector("[data-lightbox-next]");
+    var closeBtn = dialog.querySelector("[data-lightbox-close]");
+
+    var items = triggers.map(function (trigger) {
+      var img = trigger.querySelector("img");
+      var figure = trigger.closest("figure");
+      var caption = figure ? figure.querySelector("figcaption") : null;
+      return {
+        trigger: trigger,
+        src: trigger.getAttribute("href"),
+        alt: img ? img.getAttribute("alt") : "",
+        caption: caption ? caption.textContent : ""
+      };
+    });
+
+    var currentIndex = 0;
+    var lastFocused = null;
+
+    function show(index) {
+      currentIndex = (index + items.length) % items.length;
+      var item = items[currentIndex];
+      imageEl.src = item.src;
+      imageEl.alt = item.alt;
+      captionEl.textContent = item.caption;
+      positionEl.textContent =
+        "Screenshot " + (currentIndex + 1) + " of " + items.length;
+    }
+
+    function openAt(index, opener) {
+      lastFocused = opener || document.activeElement;
+      show(index);
+      dialog.showModal();
+      closeBtn.focus();
+    }
+
+    function close() {
+      if (dialog.open) dialog.close();
+    }
+
+    function getFocusable() {
+      return Array.prototype.slice.call(dialog.querySelectorAll("button"));
+    }
+
+    function trapFocus(event) {
+      var focusable = getFocusable();
+      if (!focusable.length) return;
+      var first = focusable[0];
+      var last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    triggers.forEach(function (trigger, index) {
+      trigger.addEventListener("click", function (event) {
+        event.preventDefault();
+        openAt(index, trigger);
+      });
+    });
+
+    prevBtn.addEventListener("click", function () {
+      show(currentIndex - 1);
+      prevBtn.focus();
+    });
+
+    nextBtn.addEventListener("click", function () {
+      show(currentIndex + 1);
+      nextBtn.focus();
+    });
+
+    closeBtn.addEventListener("click", close);
+
+    dialog.addEventListener("click", function (event) {
+      if (event.target === dialog) close();
+    });
+
+    dialog.addEventListener("keydown", function (event) {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        show(currentIndex - 1);
+      } else if (event.key === "ArrowRight") {
+        event.preventDefault();
+        show(currentIndex + 1);
+      } else if (event.key === "Tab") {
+        trapFocus(event);
+      }
+    });
+
+    dialog.addEventListener("close", function () {
+      if (lastFocused && typeof lastFocused.focus === "function") {
+        lastFocused.focus();
+      }
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     setupMobileNav();
     applyConfig();
     setFooterYear();
+    setupLightbox();
   });
 })();
