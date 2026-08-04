@@ -13,8 +13,14 @@ const COSMOFY_CONFIG = {
   // button will open that form in place of the mailto fallback.
   betaFormUrl: "",
 
-  contactEmail: "hello@cosmofyapp.com",
-  supportEmail: "support@cosmofyapp.com",
+  // Cosmofy's own hello@/support@ mailboxes aren't active yet — routed to a
+  // personal address in the interim so the site's contact/support links
+  // actually reach someone. Visible link text stays generic ("Contact
+  // Cosmofy" / "Email Support") rather than showing this address as page
+  // text; swap this back to hello@cosmofyapp.com / support@cosmofyapp.com
+  // once those mailboxes are live.
+  contactEmail: "dkeding1@gmail.com",
+  supportEmail: "dkeding1@gmail.com",
 
   // When a Google Play listing exists, set this to the store URL.
   playStoreUrl: "",
