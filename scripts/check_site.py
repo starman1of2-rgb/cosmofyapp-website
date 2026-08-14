@@ -59,8 +59,8 @@ REQUIRED_DIRS = [
     "scripts",
 ]
 
-HTML_PAGES = ["index.html", "privacy.html", "accessibility.html", "support.html", "404.html"]
-PAGES_REQUIRING_CANONICAL = ["index.html", "privacy.html", "accessibility.html", "support.html"]
+HTML_PAGES = ["index.html", "product-tour.html", "privacy.html", "accessibility.html", "support.html", "404.html"]
+PAGES_REQUIRING_CANONICAL = ["index.html", "product-tour.html", "privacy.html", "accessibility.html", "support.html"]
 
 # Only actual served site files are checked for localhost/private-path leaks.
 # Markdown documentation (README.md, DNS_SETUP.md, NOTICE.md, ...) is allowed
