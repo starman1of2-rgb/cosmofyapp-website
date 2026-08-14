@@ -1,0 +1,149 @@
+/* Cosmofy™ product tour — tablet screenshot presentation. */
+.product-tour-intro {
+  max-width: 48rem;
+}
+
+.product-tour-section + .product-tour-section {
+  margin-top: var(--space-6);
+}
+
+.product-tour-section .section-header {
+  margin-bottom: var(--space-4);
+}
+
+.product-tour-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.product-tour-item {
+  margin: 0;
+  text-align: center;
+}
+
+.sprite-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tablet-shot,
+.sprite-lightbox-cell {
+  display: block;
+  aspect-ratio: 5 / 8;
+  background-repeat: no-repeat;
+  background-size: 500% 300%;
+  background-color: var(--color-cream);
+}
+
+.tablet-shot {
+  width: 100%;
+  max-width: 340px;
+  margin-inline: auto;
+  border: 0.45rem solid var(--color-charcoal);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.product-tour-item figcaption {
+  max-width: 28rem;
+  margin: var(--space-2) auto 0;
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+}
+
+.sprite-trigger:hover .tablet-shot,
+.sprite-trigger:focus-visible .tablet-shot {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+}
+
+.product-tour-actions {
+  margin-top: var(--space-5);
+}
+
+.sprite-lightbox {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: 100vw;
+  max-height: 100vh;
+  max-height: 100dvh;
+  background: transparent;
+  display: none;
+}
+
+.sprite-lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sprite-lightbox::backdrop {
+  background: rgba(20, 16, 13, 0.92);
+}
+
+.sprite-lightbox-panel {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.sprite-lightbox-cell {
+  width: min(92vw, 600px);
+  border: 0.5rem solid var(--color-charcoal);
+  border-radius: 1.5rem;
+  box-shadow: var(--shadow-lg);
+}
+
+.sprite-lightbox :focus-visible {
+  outline-color: var(--color-cream);
+}
+
+@media (max-width: 540px) {
+  .product-tour-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tablet-shot {
+    max-width: 320px;
+  }
+
+  .sprite-lightbox-cell {
+    width: min(90vw, 430px);
+  }
+}
+
+.sprite-cell,
+.sprite-lightbox-cell {
+  background-image: url("assets/screenshots/tablet-tour-sprite.webp");
+}
+[data-sprite-index="0"] { background-position: 0% 0%; }
+[data-sprite-index="1"] { background-position: 25% 0%; }
+[data-sprite-index="2"] { background-position: 50% 0%; }
+[data-sprite-index="3"] { background-position: 75% 0%; }
+[data-sprite-index="4"] { background-position: 100% 0%; }
+[data-sprite-index="5"] { background-position: 0% 50%; }
+[data-sprite-index="6"] { background-position: 25% 50%; }
+[data-sprite-index="7"] { background-position: 50% 50%; }
+[data-sprite-index="8"] { background-position: 75% 50%; }
+[data-sprite-index="9"] { background-position: 100% 50%; }
+[data-sprite-index="10"] { background-position: 0% 100%; }
+[data-sprite-index="11"] { background-position: 25% 100%; }
+[data-sprite-index="12"] { background-position: 50% 100%; }
+[data-sprite-index="13"] { background-position: 75% 100%; }
+[data-sprite-index="14"] { background-position: 100% 100%; }
