@@ -1,0 +1,241 @@
+name: Build tablet product tour
+
+on:
+  push:
+    branches:
+      - tablet-product-tour-action-2
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out staging branch
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Reconstruct tablet screenshots
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p assets/screenshots/tablet
+
+          fetch_blob() {
+            local sha="$1"
+            local dest="$2"
+            curl --fail --silent --show-error \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/git/blobs/${sha}" \
+              | jq -r '.content' | tr -d '\n' | base64 --decode > "$dest"
+          }
+
+          fetch_blob ab5c9d0983aa80241671de84eb06411e5a514937 assets/screenshots/tablet/01-home.webp
+          fetch_blob 7703ef3c127d27ea1d08a2d555d6c49622a237c3 assets/screenshots/tablet/02-calendar-month.webp
+          fetch_blob f84f7d31a0fb946a9163e140b05d38b55eb54ff5 assets/screenshots/tablet/03-splash.webp
+          fetch_blob 81b1606dd8c92c44dee95f4856374e651dee74d8 assets/screenshots/tablet/04-add-client.webp
+          fetch_blob 53db0787a9b83ae407fed8cb5d391df6ae630366 assets/screenshots/tablet/05-daily-close.webp
+          fetch_blob b1987d3061be20a7057bab2f69528c29c0be8d14 assets/screenshots/tablet/06-checkout.webp
+          fetch_blob 57360792d944f29fb21bfa8c0cadf93db6bf8340 assets/screenshots/tablet/07-record-expense.webp
+          fetch_blob 24dd9fbadb8ff8b694b3233d15f86f7e5255a167 assets/screenshots/tablet/08-more.webp
+          fetch_blob 0d0b9f71c5a8b2dccc35b5a22963391fc444e6cb assets/screenshots/tablet/09-help-contents.webp
+          fetch_blob 41e740754734de81630efc01669ab38bcab9a030 assets/screenshots/tablet/10-services.webp
+          fetch_blob 094dd76d2da6ab32554a3fce0b2a35e3803e69a6 assets/screenshots/tablet/11-reports.webp
+          fetch_blob 9925639610f83819c2ce083d1b04daded8a1ac70 assets/screenshots/tablet/12-settings-privacy.webp
+          fetch_blob ed025bbb24161065e135c0c4386f01e2347e86da assets/screenshots/tablet/13-birthday-center.webp
+          fetch_blob 7d990af6bf9fc0ea85ee148923a89710f671cfbe assets/screenshots/tablet/14-manual-welcome.webp
+          fetch_blob 4a168c5e38ae7c0ddaf729cbc4b7cf68f2413eab assets/screenshots/tablet/15-manual-privacy.webp
+
+          python3 - <<'PY'
+          from pathlib import Path
+          files = sorted(Path('assets/screenshots/tablet').glob('*.webp'))
+          assert len(files) == 15, f'Expected 15 WebP files, got {len(files)}'
+          for p in files:
+              b = p.read_bytes()
+              assert len(b) > 1000, f'{p} is unexpectedly small'
+              assert b[:4] == b'RIFF' and b[8:12] == b'WEBP', f'{p} is not a valid WebP container'
+          print('Validated 15 WebP screenshot containers.')
+          PY
+
+      - name: Build product tour and integrate navigation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+
+          root = Path('.')
+
+          logo = '''<svg class="logo-mark" viewBox="0 0 108 108" role="img" aria-labelledby="logo-title">
+            <title id="logo-title">Cosmofy logo</title>
+            <rect width="108" height="108" rx="24" fill="#2b2622"/>
+            <path fill="#e8d9b5" d="M54,27 C39.09,27 27,39.09 27,54 C27,68.91 39.09,81 54,81 C63.16,81 71.24,76.42 76.14,69.44 L66.4,63.32 C63.29,67.29 58.94,69.7 54,69.7 C45.28,69.7 38.3,62.72 38.3,54 C38.3,45.28 45.28,38.3 54,38.3 C58.53,38.3 62.6,40.4 65.68,43.98 L75.5,37.98 C70.44,31.35 62.75,27 54,27 Z"/>
+            <path fill="#a9784f" d="M54,45 C49.03,45 45,49.03 45,54 C45,58.97 49.03,63 54,63 C58.97,63 63,58.97 63,54 C63,49.03 58.97,45 54,45 Z"/>
+          </svg>'''
+          footer_logo = logo.replace('logo-title', 'footer-logo-title')
+
+          groups = [
+            ('App overview', [
+              ('03-splash.webp', 'Cosmofy launch screen in a modern salon', 'The Cosmofy welcome screen'),
+              ('01-home.webp', 'Cosmofy Home screen showing the current date, today’s appointments, daily business snapshot, and attention items', 'Home keeps the working day in one view'),
+              ('02-calendar-month.webp', 'Cosmofy month calendar for August 2026 with Day, Week, and Month controls', 'Day, week, and month calendar views'),
+              ('08-more.webp', 'Cosmofy More screen with Search, Services, Reports, Inventory, Formula library, Birthday center, and Settings', 'The business tools are organized in one place'),
+            ]),
+            ('Clients and services', [
+              ('04-add-client.webp', 'Add client screen with profile photo and client information fields', 'Create a detailed private client record'),
+              ('10-services.webp', 'Services screen listing salon services, duration, price, and active status', 'Build and manage your service catalog'),
+              ('13-birthday-center.webp', 'Birthday Center with local reminder controls and look-ahead ranges', 'Birthday reminders stay local and stylist-controlled'),
+              ('06-checkout.webp', 'Checkout screen with items, discount, tax, tip, payment, and totals', 'Checkout connects the visit to the money'),
+            ]),
+            ('Money and business', [
+              ('05-daily-close.webp', 'Daily close screen with service income, retail income, tips, payment methods, expenses, and cash reconciliation', 'Daily close brings the day’s numbers together'),
+              ('07-record-expense.webp', 'Record expense screen with vendor, description, amount, category, payment method, receipt photo, and notes', 'Record expenses and attach receipt photos'),
+              ('11-reports.webp', 'Reports screen with income, expense, business performance, year-end, and insights reports', 'Reporting goes beyond appointment totals'),
+            ]),
+            ('Privacy and guidance', [
+              ('12-settings-privacy.webp', 'Settings screen showing biometric lock, screenshot blocking, local notifications, and encrypted backup controls', 'Privacy and backup controls are built into Settings'),
+              ('09-help-contents.webp', 'Offline Help and User Manual table of contents', 'The full user manual is available inside the app'),
+              ('14-manual-welcome.webp', 'Cosmofy manual introduction describing the private single-stylist salon-management app and stylist-controlled scheduling', 'Built specifically for independent stylists'),
+              ('15-manual-privacy.webp', 'Cosmofy manual privacy section explaining local records, no automatic cloud account, no client self-booking, and user-controlled backup', 'The privacy model is explained in plain language'),
+            ]),
+          ]
+
+          group_html = []
+          for title, items in groups:
+              gid = re.sub(r'[^a-z]+', '-', title.lower()).strip('-')
+              figures = []
+              for filename, alt, caption in items:
+                  figures.append(f'''<figure class="tablet-shot screenshot-item">
+                    <a class="screenshot-trigger" href="assets/screenshots/tablet/{filename}" data-lightbox-trigger>
+                      <div class="tablet-frame"><img src="assets/screenshots/tablet/{filename}" alt="{alt}" width="800" height="1280" loading="lazy"></div>
+                    </a>
+                    <figcaption>{caption}</figcaption>
+                  </figure>''')
+              group_html.append(f'''<section class="tour-group" aria-labelledby="{gid}">
+                <div class="tour-group-heading"><h2 id="{gid}">{title}</h2></div>
+                <div class="tablet-gallery">{''.join(figures)}</div>
+              </section>''')
+
+          page = f'''<!doctype html>
+          <html lang="en">
+          <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+          <title>Product Tour | Cosmofy™</title>
+          <meta name="description" content="Take a closer look at Cosmofy with real Android tablet screens showing calendar, clients, services, checkout, expenses, reports, privacy controls, and the built-in user manual.">
+          <link rel="canonical" href="https://cosmofyapp.com/product-tour.html">
+          <meta name="theme-color" content="#2b2622">
+          <link rel="icon" href="favicon.svg" type="image/svg+xml">
+          <link rel="manifest" href="site.webmanifest">
+          <meta property="og:type" content="website"><meta property="og:site_name" content="Cosmofy"><meta property="og:title" content="Product Tour | Cosmofy™"><meta property="og:description" content="See real Cosmofy Android screens for salon scheduling, clients, money, privacy, and more."><meta property="og:url" content="https://cosmofyapp.com/product-tour.html"><meta property="og:image" content="https://cosmofyapp.com/social-preview.svg">
+          <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Product Tour | Cosmofy™"><meta name="twitter:description" content="See real Cosmofy Android screens for salon scheduling, clients, money, privacy, and more."><meta name="twitter:image" content="https://cosmofyapp.com/social-preview.svg">
+          <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; font-src 'self'; form-action 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none';">
+          <link rel="stylesheet" href="styles.css">
+          </head>
+          <body>
+          <a class="skip-link" href="#main-content">Skip to main content</a>
+          <header class="site-header"><div class="container nav-bar"><a class="wordmark" href="index.html">{logo}Cosmofy™</a><button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-controls="primary-navigation" aria-label="Menu"><span class="nav-toggle-icon"></span></button><nav class="primary-nav" id="primary-navigation" data-primary-nav aria-label="Primary"><ul><li><a href="index.html">Home</a></li><li><a href="index.html#features">Features</a></li><li><a href="product-tour.html" aria-current="page">Product Tour</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="accessibility.html">Accessibility</a></li><li><a href="support.html">Support</a></li><li><span class="nav-beta-status" data-beta-status>Now in Android beta testing</span></li></ul></nav></div></header>
+          <main id="main-content" tabindex="-1"><div class="page-header tour-header"><div class="container"><p class="eyebrow">See Cosmofy in action</p><h1>A fuller look at the app.</h1><p class="lede">These are real Cosmofy screens captured on an Android tablet. They show the same app and controls a stylist uses, with the wider tablet view making the complete workflow easier to see.</p></div></div><section class="section"><div class="container"><p class="gallery-hint">Select any screenshot to enlarge it. Use Previous and Next to move through the tour.</p>{''.join(group_html)}</div></section></main>
+          <footer class="site-footer"><div class="container"><div class="footer-grid"><div><a class="wordmark" href="index.html">{footer_logo}Cosmofy™</a><p>cosmofyapp.com</p></div><ul class="footer-links"><li><a href="product-tour.html">Product Tour</a></li><li><a href="privacy.html">Privacy</a></li><li><a href="accessibility.html">Accessibility</a></li><li><a href="support.html">Support</a></li><li><span data-beta-status>Now in Android beta testing</span></li></ul></div><p class="footer-fine-print">&copy; <span data-current-year>2026</span> Cosmofy™. Cosmofy organizes information entered by the user. Financial reports are not tax, accounting, or legal advice.</p></div></footer>
+          <dialog class="lightbox" data-lightbox aria-labelledby="lightbox-heading" aria-describedby="lightbox-caption" aria-modal="true"><h2 id="lightbox-heading" class="visually-hidden">Screenshot viewer</h2><div class="lightbox-panel"><div class="lightbox-toolbar"><button type="button" class="lightbox-btn" data-lightbox-prev><span class="lightbox-icon" aria-hidden="true">&#8249;</span><span>Previous</span></button><p class="lightbox-position" data-lightbox-position aria-live="polite"></p><button type="button" class="lightbox-btn" data-lightbox-next><span class="lightbox-icon" aria-hidden="true">&#8250;</span><span>Next</span></button><button type="button" class="lightbox-btn lightbox-close" data-lightbox-close><span class="lightbox-icon" aria-hidden="true">&times;</span><span>Close</span></button></div><div class="lightbox-image-wrap"><img class="lightbox-image" data-lightbox-image alt=""></div><p class="lightbox-caption" id="lightbox-caption" data-lightbox-caption></p></div></dialog>
+          <script src="site-config.js"></script><script src="script.js"></script>
+          </body></html>'''
+          (root / 'product-tour.html').write_text(page, encoding='utf-8')
+
+          # Keep navigation consistent across the existing public pages.
+          for filename in ['index.html', 'privacy.html', 'accessibility.html', 'support.html', '404.html']:
+              p = root / filename
+              text = p.read_text(encoding='utf-8')
+              if 'href="product-tour.html"' not in text:
+                  needle = '<li><a href="index.html#features">Features</a></li>'
+                  if needle in text:
+                      text = text.replace(needle, needle + '\n        <li><a href="product-tour.html">Product Tour</a></li>', 1)
+              # Add Product Tour to footer links as well.
+              if '<ul class="footer-links">\n        <li><a href="product-tour.html">Product Tour</a></li>' not in text:
+                  footer_needle = '<ul class="footer-links">\n        <li><a href="privacy.html">Privacy</a></li>'
+                  if footer_needle in text:
+                      text = text.replace(footer_needle, '<ul class="footer-links">\n        <li><a href="product-tour.html">Product Tour</a></li>\n        <li><a href="privacy.html">Privacy</a></li>', 1)
+              p.write_text(text, encoding='utf-8')
+
+          # Put a clear CTA directly under the existing homepage screenshot gallery.
+          index = root / 'index.html'
+          text = index.read_text(encoding='utf-8')
+          if 'See the full product tour' not in text:
+              needle = '      </div>\n    </div>\n  </section>\n\n  <!-- Feature overview -->'
+              replacement = '      </div>\n      <div class="btn-row btn-row-center gallery-cta">\n        <a class="btn btn-primary" href="product-tour.html">See the full product tour</a>\n      </div>\n    </div>\n  </section>\n\n  <!-- Feature overview -->'
+              if needle not in text:
+                  raise SystemExit('Homepage gallery insertion point not found')
+              text = text.replace(needle, replacement, 1)
+          index.write_text(text, encoding='utf-8')
+
+          # Tablet gallery styling preserves the 800x1280 screenshot proportions.
+          styles = root / 'styles.css'
+          css = styles.read_text(encoding='utf-8')
+          css_block = r'''
+
+          /* --------------------------------------------------------------------------
+             Tablet product tour
+             -------------------------------------------------------------------------- */
+          .gallery-cta { margin-top: var(--space-4); }
+          .tour-header .lede { max-width: 55rem; }
+          .tour-group + .tour-group { margin-top: var(--space-6); }
+          .tour-group-heading { max-width: 42rem; margin-bottom: var(--space-3); }
+          .tablet-gallery { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); align-items: start; }
+          .tablet-shot { margin: 0; text-align: left; }
+          .tablet-frame { width: 100%; max-width: 430px; margin-inline: auto; padding: 0.55rem; border-radius: 1.6rem; background: var(--color-charcoal); box-shadow: var(--shadow-lg); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+          .tablet-frame img { width: 100%; height: auto; aspect-ratio: 5 / 8; object-fit: contain; object-position: top center; border-radius: 1.15rem; background: var(--color-cream); }
+          .tablet-shot .screenshot-trigger:hover .tablet-frame, .tablet-shot .screenshot-trigger:focus-visible .tablet-frame { transform: translateY(-4px); }
+          .tablet-shot figcaption { max-width: 430px; margin: var(--space-2) auto 0; text-align: center; color: var(--color-text-muted); font-size: 0.9375rem; }
+          @media (max-width: 760px) { .tablet-gallery { grid-template-columns: 1fr; } .tablet-frame { max-width: 390px; } }
+          '''
+          if 'Tablet product tour' not in css:
+              css += css_block
+          styles.write_text(css, encoding='utf-8')
+
+          # Add the new public page to the sitemap.
+          sitemap = root / 'sitemap.xml'
+          sm = sitemap.read_text(encoding='utf-8')
+          if 'product-tour.html' not in sm:
+              marker = '  <url>\n    <loc>https://cosmofyapp.com/privacy.html</loc>\n  </url>'
+              insert = '  <url>\n    <loc>https://cosmofyapp.com/product-tour.html</loc>\n  </url>\n' + marker
+              if marker not in sm:
+                  raise SystemExit('Sitemap insertion point not found')
+              sm = sm.replace(marker, insert, 1)
+          sitemap.write_text(sm, encoding='utf-8')
+
+          # Content/privacy checks specific to this update.
+          tour = (root / 'product-tour.html').read_text(encoding='utf-8')
+          assert tour.count('data-lightbox-trigger') == 15
+          assert 'client names' not in tour.lower()
+          for p in sorted((root / 'assets/screenshots/tablet').glob('*.webp')):
+              assert str(p).split('/')[-1] in tour
+          PY
+
+      - name: Validate site
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/check_site.py
+          git diff --check
+          test "$(find assets/screenshots/tablet -maxdepth 1 -name '*.webp' | wc -l)" -eq 15
+
+      - name: Publish validated update to main
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "OpenAI ChatGPT"
+          git config user.email "noreply@openai.com"
+          rm .github/workflows/build-tablet-tour.yml
+          git add -A
+          git commit --amend -m "Add Android tablet product tour"
+          git fetch origin main
+          test "$(git rev-parse HEAD^)" = "$(git rev-parse origin/main)"
+          git push origin HEAD:main
+          git push origin --delete tablet-product-tour-action-2 || true
