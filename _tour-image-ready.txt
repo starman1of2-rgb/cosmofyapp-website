@@ -1,1 +1,0 @@
-The tablet product-tour sprite is staged in Git and will replace the placeholder in the final commit.

@@ -212,7 +212,48 @@
     });
   }
 
+  function addProductTourLinks() {
+    var navList = document.querySelector("[data-primary-nav] ul");
+    if (navList && !navList.querySelector('a[href="product-tour.html"]')) {
+      var featuresLink = navList.querySelector('a[href="index.html#features"]');
+      var item = document.createElement("li");
+      var link = document.createElement("a");
+      link.href = "product-tour.html";
+      link.textContent = "Product tour";
+      item.appendChild(link);
+      if (featuresLink && featuresLink.parentElement) {
+        featuresLink.parentElement.insertAdjacentElement("afterend", item);
+      } else {
+        navList.appendChild(item);
+      }
+    }
+
+    var footerList = document.querySelector(".footer-links");
+    if (footerList && !footerList.querySelector('a[href="product-tour.html"]')) {
+      var footerItem = document.createElement("li");
+      var footerLink = document.createElement("a");
+      footerLink.href = "product-tour.html";
+      footerLink.textContent = "Product tour";
+      footerItem.appendChild(footerLink);
+      footerList.insertBefore(footerItem, footerList.firstChild);
+    }
+
+    var gallery = document.querySelector(".screenshot-gallery");
+    if (gallery && !document.querySelector("[data-product-tour-cta]")) {
+      var row = document.createElement("div");
+      row.className = "btn-row btn-row-center";
+      row.setAttribute("data-product-tour-cta", "");
+      var cta = document.createElement("a");
+      cta.className = "btn btn-secondary";
+      cta.href = "product-tour.html";
+      cta.textContent = "See the full product tour";
+      row.appendChild(cta);
+      gallery.insertAdjacentElement("afterend", row);
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    addProductTourLinks();
     setupMobileNav();
     applyConfig();
     setFooterYear();
