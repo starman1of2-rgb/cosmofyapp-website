@@ -236,6 +236,26 @@ def check_links(rel, links, content):
                 errors.append(f"{rel}: broken anchor '{href}'")
 
 
+def check_privacy_policy_metadata():
+    full = os.path.join(ROOT, "privacy.html")
+    if not os.path.isfile(full):
+        return
+    with open(full, encoding="utf-8") as fh:
+        content = fh.read()
+
+    # Effective Date / Version are rendered as "<strong>Label:</strong> value" — strip tags so
+    # the check reads rendered text rather than requiring an exact-HTML-shape match.
+    text = re.sub(r"<[^>]+>", "", content)
+
+    for required in ("Effective Date: August 14, 2026", "Privacy Policy Version: 1.0"):
+        if required not in text:
+            errors.append(f"privacy.html: missing required Privacy Policy metadata '{required}'")
+
+    obsolete = "may be expanded and published in more depth before public release"
+    if obsolete in content:
+        errors.append(f"privacy.html: obsolete placeholder language still present: '{obsolete}'")
+
+
 def check_pages():
     for rel in HTML_PAGES:
         full = os.path.join(ROOT, rel)
@@ -269,6 +289,7 @@ def main():
     check_cname()
     check_no_localhost_or_private_paths()
     check_secret_like_literals()
+    check_privacy_policy_metadata()
     check_pages()
 
     if errors:
