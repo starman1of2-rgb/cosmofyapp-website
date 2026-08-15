@@ -891,9 +891,22 @@ input:focus-visible,
    this one heading via its own class rather than widening .page-header h1 itself, so Accessibility/
    Support/404 keep their exact current sizing. Clamped at 2rem so nothing changes at the widths
    where the unstyled default already rendered at 2rem (normal mobile widths and up, and desktop).
-   */
+
+   Headless-Chromium measurement confirmed the box itself is never the problem — at 400px the H1's
+   own content box computes to exactly 352px (the container's 400px minus 24px padding each side),
+   with document.documentElement.scrollWidth === clientWidth (no page-level overflow) either
+   before or after this rule. The one thing that measurement can't rule out is font substitution:
+   this environment has no "Inter" installed and falls back to the next entry in --font-sans, which
+   may be narrower than Inter actually is on a machine that has it installed. overflow-wrap here is
+   the structural guarantee for that case — it does not change any font-size number, it just forbids
+   this heading's box from ever being exceeded by a run of text, on any font, by allowing a break
+   inside a word as a last resort instead of overflowing. word-break is the older-syntax equivalent
+   for engines that don't yet support the overflow-wrap keyword. */
 .privacy-policy-title {
   font-size: clamp(1.5rem, 8vw, 2rem);
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .prose {
