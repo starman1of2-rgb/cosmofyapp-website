@@ -885,6 +885,17 @@ input:focus-visible,
   max-width: 30ch;
 }
 
+/* Privacy Policy page title only — unlike the other .page-header pages (Accessibility, Support,
+   404), whose H1 text is short enough to wrap comfortably at the browser's default H1 size,
+   "Cosmofy Privacy Policy" was found to overflow narrow phone widths (400px and below). Scoped to
+   this one heading via its own class rather than widening .page-header h1 itself, so Accessibility/
+   Support/404 keep their exact current sizing. Clamped at 2rem so nothing changes at the widths
+   where the unstyled default already rendered at 2rem (normal mobile widths and up, and desktop).
+   */
+.privacy-policy-title {
+  font-size: clamp(1.5rem, 8vw, 2rem);
+}
+
 .prose {
   max-width: 42rem;
 }
