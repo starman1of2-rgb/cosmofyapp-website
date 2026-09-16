@@ -29,14 +29,14 @@ Confirm none of the following unsupported claims appear:
 - [ ] "Accountant approved" / "tax authority approved"
 - [ ] "Guaranteed secure" / "impossible to hack"
 - [ ] "Cloud encrypted" (unless specifically documented and true)
-- [ ] "Available on Google Play" (unless actually published)
+- [ ] "Available on Google Play", "Available now", "Download now", or "Buy now"
+      (unless the Play Store listing is actually publicly accessible)
 - [ ] Any customer count, testimonial, or review not supplied and approved by the user
 - [ ] Any release date not approved by the user
+- [ ] Any sale-ending / introductory-price-expiration date not approved by the user
 - [ ] A public APK/AAB download link
-- [ ] The beta described as open to everyone, rather than a small/limited/approved group
-- [ ] Any promise of cash compensation, hardware, future paid services, or unlimited
-      future products for beta testers (only: the released app, at no cost, for
-      testers who actively participate)
+- [ ] Beta-testing, closed-testing, tester-recruitment, or "join the beta" language
+      (closed testing has ended; the app is in Google Play production review)
 
 Confirm supportable phrasing is used instead, such as:
 
@@ -44,9 +44,10 @@ Confirm supportable phrasing is used instead, such as:
 - [ ] "Designed for private, local salon recordkeeping"
 - [ ] "The stylist controls the calendar"
 - [ ] "No client self-booking"
-- [ ] "Now in Android beta testing" (current status — see `betaStatus` in
+- [ ] "Coming soon to Google Play" (current status — see `betaStatus` in
       `site-config.js`, which drives every status badge/footer note site-wide)
-- [ ] "A small, approved group of beta testers" (not "open" or "everyone")
+- [ ] "One-time purchase — no subscription" with the correct introductory
+      ($29.99) and regular ($49.99) prices, and no invented sale-end date
 
 ## Mock data
 

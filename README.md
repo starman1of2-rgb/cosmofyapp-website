@@ -34,13 +34,16 @@ cosmofyapp-website/
 ├── index.html                    Homepage (all main marketing sections)
 ├── privacy.html                  Website + app privacy statement
 ├── accessibility.html            Accessibility statement
-├── support.html                  Support / beta status page
+├── support.html                  Support / launch status page
 ├── 404.html                      Custom not-found page
 ├── styles.css                    All site styling (CSS custom properties)
 ├── script.js                     Mobile nav, config-driven links, footer year
-├── site-config.js                Editable contact/beta/store configuration
+├── site-config.js                Editable contact/launch-status/store configuration
 ├── favicon.svg                   Favicon (Cosmofy logomark)
-├── social-preview.svg            Open Graph / Twitter card image
+├── social-preview.svg            Open Graph / Twitter card image (editable source)
+├── social-preview.png            Open Graph / Twitter card image (1200×630 PNG actually
+│                                  referenced by meta tags — regenerate from the SVG if it
+│                                  changes; see "Brand asset origin" below)
 ├── robots.txt                    Search engine crawl rules + sitemap link
 ├── sitemap.xml                   Listed public pages
 ├── site.webmanifest              Web app manifest
@@ -85,27 +88,14 @@ usually be made in one place.
 ## How `site-config.js` works
 
 `site-config.js` defines a single `COSMOFY_CONFIG` object that `script.js`
-uses to fill in contact links, the beta CTA, and beta status text at page
-load, via `data-*` attributes in the HTML (e.g. `data-contact-email`,
-`data-beta-cta`, `data-beta-status`). Core content still works with
-JavaScript disabled, because every element has a sensible static
-fallback already in the HTML (e.g. the mailto link and beta status text
-are already correct as plain HTML).
+uses to fill in contact links and launch-status text at page load, via
+`data-*` attributes in the HTML (e.g. `data-contact-email`,
+`data-beta-status`). Core content still works with JavaScript disabled,
+because every element has a sensible static fallback already in the HTML
+(e.g. the mailto links and status text are already correct as plain
+HTML).
 
-### To add a beta-signup form URL later
-
-Edit `site-config.js` and set:
-
-```js
-betaFormUrl: "https://your-form-url-here",
-```
-
-The "Express beta interest" button will then link to that form instead
-of the `mailto:` fallback. Do not wire up a third-party form provider
-without first reviewing its own privacy practices, since it would become
-an external service this site links to.
-
-### To add a Google Play Store URL later
+### To add a Google Play Store URL once the listing is public
 
 Edit `site-config.js` and set:
 
@@ -114,14 +104,16 @@ playStoreUrl: "https://play.google.com/store/apps/details?id=...",
 ```
 
 Any element marked `data-play-store-link` will be revealed and pointed at
-that URL. You will also want to update `support.html` and the homepage
-FAQ answer about Google Play availability once this is set.
+that URL. You will also want to update `betaStatus` (e.g. to "Available
+now on Google Play"), `support.html`, and the homepage availability
+section and FAQ answers about Google Play availability once this is set.
+See `CONTENT_REVIEW_CHECKLIST.md` for the full pre-publish claims review.
 
 ### To update contact addresses
 
 Edit `contactEmail` and `supportEmail` in `site-config.js`.
 
-### To change beta status text
+### To change the launch-status badge text
 
 Edit `betaStatus` in `site-config.js`. This updates every element marked
 `data-beta-status` (currently in the header nav and `support.html`).
@@ -238,6 +230,17 @@ other file was copied from the Android repository. The Android app's
 `splash_background.png` (a photographic image) was deliberately **not**
 used on this website because its image licensing/rights could not be
 verified from local inspection alone.
+
+### `social-preview.png`
+
+`social-preview.png` is a 1200×630, 8-bit RGB (no alpha channel) rasterized
+export of `social-preview.svg`, used because most social/chat link-preview
+crawlers don't reliably render SVG `og:image`/`twitter:image` values. Treat
+the SVG as the source of truth: if you edit `social-preview.svg`, re-export
+`social-preview.png` at exactly 1200×630 to keep them in sync (any
+SVG-to-PNG renderer works, e.g. a headless browser screenshot of the SVG at
+that exact size, or `rsvg-convert -w 1200 -h 630`), and re-verify it's a
+non-transparent, standard RGB PNG before committing.
 
 The real app screenshots in `assets/screenshots/` (used in the hero and
 the "See it in action" gallery) came from an on-device Pixel test

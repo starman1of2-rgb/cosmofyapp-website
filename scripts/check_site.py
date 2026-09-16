@@ -39,6 +39,7 @@ REQUIRED_FILES = [
     "site-config.js",
     "favicon.svg",
     "social-preview.svg",
+    "social-preview.png",
     "robots.txt",
     "sitemap.xml",
     "site.webmanifest",

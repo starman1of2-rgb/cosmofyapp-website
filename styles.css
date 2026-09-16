@@ -885,6 +885,10 @@ input:focus-visible,
   max-width: 30ch;
 }
 
+.page-header .lede {
+  color: var(--color-champagne);
+}
+
 /* Privacy Policy page title only — unlike the other .page-header pages (Accessibility, Support,
    404), whose H1 text is short enough to wrap comfortably at the browser's default H1 size,
    "Cosmofy Privacy Policy" was found to overflow narrow phone widths (400px and below). Scoped to
