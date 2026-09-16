@@ -18,6 +18,10 @@ const COSMOFY_CONFIG = {
   contactEmail: "dkeding1@gmail.com",
   supportEmail: "dkeding1@gmail.com",
 
+  // Official public Facebook community. This is the preferred place for
+  // general questions, tips, feedback, feature ideas, and salon discussion.
+  facebookGroupUrl: "https://www.facebook.com/groups/1084569343945187",
+
   // Cosmofy has been submitted for production release and is in Google
   // Play review. Set this to the real listing URL once it's publicly
   // accessible — see README.md for what else to update at that point.

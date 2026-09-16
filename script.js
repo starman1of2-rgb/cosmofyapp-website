@@ -83,6 +83,13 @@
       el.textContent = COSMOFY_CONFIG.betaStatus;
     });
 
+    var facebookLinks = document.querySelectorAll("[data-facebook-link]");
+    facebookLinks.forEach(function (el) {
+      if (COSMOFY_CONFIG.facebookGroupUrl) {
+        el.setAttribute("href", COSMOFY_CONFIG.facebookGroupUrl);
+      }
+    });
+
     var playStoreLinks = document.querySelectorAll("[data-play-store-link]");
     playStoreLinks.forEach(function (el) {
       if (COSMOFY_CONFIG.playStoreUrl) {

@@ -113,6 +113,13 @@ See `CONTENT_REVIEW_CHECKLIST.md` for the full pre-publish claims review.
 
 Edit `contactEmail` and `supportEmail` in `site-config.js`.
 
+### To update the Facebook community link
+
+Edit `facebookGroupUrl` in `site-config.js`. Any element marked
+`data-facebook-link` will be updated to point at that URL (each already has
+the current URL as a static HTML fallback, so the link works with
+JavaScript disabled too).
+
 ### To change the launch-status badge text
 
 Edit `betaStatus` in `site-config.js`. This updates every element marked
