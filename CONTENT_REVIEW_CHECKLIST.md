@@ -30,13 +30,17 @@ Confirm none of the following unsupported claims appear:
 - [ ] "Guaranteed secure" / "impossible to hack"
 - [ ] "Cloud encrypted" (unless specifically documented and true)
 - [ ] "Available on Google Play", "Available now", "Download now", or "Buy now"
-      (unless the Play Store listing is actually publicly accessible)
+      (only true now that the Play Store listing at `com.cosmofy.app` is
+      actually publicly accessible — re-verify before reusing this checklist
+      if that ever changes)
 - [ ] Any customer count, testimonial, or review not supplied and approved by the user
 - [ ] Any release date not approved by the user
-- [ ] Any sale-ending / introductory-price-expiration date not approved by the user
+- [ ] Any sale date, sale price, or savings figure that doesn't match
+      `pricing` in `site-config.js`
 - [ ] A public APK/AAB download link
-- [ ] Beta-testing, closed-testing, tester-recruitment, or "join the beta" language
-      (closed testing has ended; the app is in Google Play production review)
+- [ ] Beta-testing, closed-testing, tester-recruitment, "join the beta", or
+      "production review" language (closed testing and Google Play review have
+      both ended; the app is live)
 
 Confirm supportable phrasing is used instead, such as:
 
@@ -44,10 +48,13 @@ Confirm supportable phrasing is used instead, such as:
 - [ ] "Designed for private, local salon recordkeeping"
 - [ ] "The stylist controls the calendar"
 - [ ] "No client self-booking"
-- [ ] "Coming soon to Google Play" (current status — see `betaStatus` in
+- [ ] "Available now on Google Play" (current status — see `betaStatus` in
       `site-config.js`, which drives every status badge/footer note site-wide)
-- [ ] "One-time purchase — no subscription" with the correct introductory
-      ($29.99) and regular ($49.99) prices, and no invented sale-end date
+- [ ] "One-time purchase — no subscription" with the correct regular price
+      ($49.99) and, during the approved launch-sale window only, the sale
+      price ($29.99) and savings ($20 / about 40%) from `pricing` in
+      `site-config.js` — never a hardcoded date or amount typed directly
+      into a page
 
 ## Mock data
 

@@ -53,9 +53,11 @@ based on assumption.
 ## Content and contact
 
 - [ ] Contact email(s) confirmed correct in `site-config.js`
-- [ ] `playStoreUrl` left empty until the public Play Store listing URL is confirmed
-- [ ] Pricing wording confirmed correct ($29.99 introductory / $49.99 regular, one-time
-      purchase, no subscription, no invented sale-end date)
+- [ ] `playStoreUrl` in `site-config.js` matches the live Play Store listing
+      (`com.cosmofy.app`)
+- [ ] Pricing wording confirmed correct (regular $49.99, one-time purchase, no
+      subscription) and `pricing` dates/amounts in `site-config.js` match the
+      real, user-approved launch-sale schedule
 - [ ] `social-preview.png` is exactly 1200×630, standard RGB (no alpha), and matches
       `social-preview.svg` visually (regenerate the PNG if the SVG changed)
 - [ ] Social preview image checked (rendered by a link-preview tool)

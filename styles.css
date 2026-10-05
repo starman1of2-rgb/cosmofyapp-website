@@ -160,6 +160,11 @@ input:focus-visible,
   margin-bottom: var(--space-5);
 }
 
+.section-header-center {
+  margin-inline: auto;
+  text-align: center;
+}
+
 .eyebrow {
   display: inline-block;
   font-size: 0.8125rem;
@@ -422,6 +427,11 @@ input:focus-visible,
   justify-content: center;
 }
 
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.0625rem;
+}
+
 /* --------------------------------------------------------------------------
    Hero
    -------------------------------------------------------------------------- */
@@ -454,6 +464,29 @@ input:focus-visible,
   .hero-visual {
     order: -1;
   }
+}
+
+.hero-points {
+  list-style: none;
+  padding: 0;
+  margin: var(--space-3) 0 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.hero-points li {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.hero-points .icon {
+  color: var(--color-bronze-deep);
+  font-weight: 800;
 }
 
 /* --------------------------------------------------------------------------
@@ -777,6 +810,88 @@ input:focus-visible,
 
 .section-dark .check-list .icon {
   color: var(--color-champagne);
+}
+
+/* --------------------------------------------------------------------------
+   Pricing card
+   -------------------------------------------------------------------------- */
+
+.pricing-card {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5) var(--space-4);
+  box-shadow: var(--shadow-lg);
+  max-width: 28rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.pricing-badge {
+  display: inline-block;
+  background: var(--color-bronze-deep);
+  color: var(--color-cream);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  margin: 0 0 var(--space-3);
+}
+
+.pricing-badge[hidden] {
+  display: none;
+}
+
+.pricing-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+}
+
+.pricing-price {
+  font-weight: 800;
+  font-size: 2.75rem;
+  color: var(--color-charcoal);
+}
+
+.pricing-price-regular.is-secondary {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.pricing-price-regular.is-struck {
+  text-decoration: line-through;
+}
+
+.pricing-price-sale {
+  color: var(--color-bronze-deep);
+}
+
+.pricing-savings {
+  font-weight: 700;
+  color: var(--color-bronze-deep);
+  margin-bottom: var(--space-2);
+}
+
+.pricing-note {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-3);
+}
+
+.pricing-terms {
+  text-align: left;
+  margin-bottom: var(--space-3);
+}
+
+.pricing-card .btn-row {
+  justify-content: center;
 }
 
 /* --------------------------------------------------------------------------

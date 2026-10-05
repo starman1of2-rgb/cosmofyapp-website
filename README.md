@@ -95,19 +95,34 @@ because every element has a sensible static fallback already in the HTML
 (e.g. the mailto links and status text are already correct as plain
 HTML).
 
-### To add a Google Play Store URL once the listing is public
+### Google Play Store URL and launch status
 
-Edit `site-config.js` and set:
+Cosmofy is publicly available now on Google Play in the United States.
+`site-config.js` sets:
 
 ```js
-playStoreUrl: "https://play.google.com/store/apps/details?id=...",
+playStoreUrl: "https://play.google.com/store/apps/details?id=com.cosmofy.app",
+betaStatus: "Available now on Google Play",
 ```
 
-Any element marked `data-play-store-link` will be revealed and pointed at
-that URL. You will also want to update `betaStatus` (e.g. to "Available
-now on Google Play"), `support.html`, and the homepage availability
-section and FAQ answers about Google Play availability once this is set.
-See `CONTENT_REVIEW_CHECKLIST.md` for the full pre-publish claims review.
+Any element marked `data-play-store-link` points at `playStoreUrl`. Any
+element marked `data-beta-status` (header nav badge, footer badge, and the
+"Current status" line on `support.html`) shows `betaStatus`. If the Play
+Store listing URL or package ID ever changes, update `playStoreUrl` here —
+every page picks it up automatically.
+
+### Launch-sale pricing (`pricing` in `site-config.js`)
+
+`pricing` centralizes the regular price, sale price, savings, sale name,
+and the sale's start/end dates (calendar days in Pacific Time). `script.js`
+compares the visitor's current Pacific-Time date against those dates to
+show one of three messages — before the sale, during the sale, or after it
+ends — on the homepage pricing card (`#pricing`) and anywhere else marked
+`data-pricing-sentence` (currently the homepage FAQ and `support.html`).
+This is the *only* place sale dates/amounts should be edited; do not type a
+price or date directly into an HTML page, since that bypasses the
+date-aware logic and can go stale. See `CONTENT_REVIEW_CHECKLIST.md` for
+the full pre-publish claims review before changing these values.
 
 ### To update contact addresses
 
@@ -123,7 +138,8 @@ JavaScript disabled too).
 ### To change the launch-status badge text
 
 Edit `betaStatus` in `site-config.js`. This updates every element marked
-`data-beta-status` (currently in the header nav and `support.html`).
+`data-beta-status` (currently the header nav badge, the footer badge, and
+the "Current status" line on `support.html`, on every page).
 
 ### To add or replace a real screenshot
 
