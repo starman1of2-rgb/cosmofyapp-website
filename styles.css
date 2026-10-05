@@ -326,6 +326,21 @@ input:focus-visible,
   white-space: nowrap;
 }
 
+/* The status badge is now a real link (<a class="nav-beta-status">), so the
+   generic ".primary-nav a" rule also matches it and, at equal/lower
+   specificity, would otherwise overwrite the pill's own color, padding,
+   font-size, and opacity. This higher-specificity override keeps the pill
+   looking exactly as it did as plain text, while still behaving like a
+   link (focus outline, hover underline) via the shared :hover/:focus-visible
+   rule above. */
+.primary-nav a.nav-beta-status {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-champagne);
+  opacity: 1;
+  padding: 0.35rem 0.85rem;
+}
+
 @media (max-width: 860px) {
   .nav-toggle {
     display: inline-flex;
@@ -365,6 +380,12 @@ input:focus-visible,
   .nav-beta-status {
     display: inline-block;
     margin-top: var(--space-2);
+  }
+
+  .primary-nav a.nav-beta-status {
+    display: inline-block;
+    padding: 0.35rem 0.85rem;
+    min-height: 0;
   }
 }
 
